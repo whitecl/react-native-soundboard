@@ -1,4 +1,5 @@
 import React from "react";
+import { Audio } from "expo-av";
 import {
   Image,
   FlatList,
@@ -10,6 +11,16 @@ import {
 
 import data from "./data";
 
+const playSound = async sound => {
+  const soundObject = new Audio.Sound();
+  try {
+    await soundObject.loadAsync(sound);
+    await soundObject.playAsync();
+  } catch (error) {
+    console.error(error)
+  }
+};
+
 export default function App() {
   return (
     <View style={styles.container}>
@@ -18,7 +29,10 @@ export default function App() {
         numColumns={3}
         renderItem={({ item }) => (
           <View style={styles.listItem}>
-            <TouchableOpacity style={styles.box}>
+            <TouchableOpacity
+              onPress={() => playSound(item.sound)}
+              style={styles.box}
+            >
               <Image source={item.img} style={styles.icon} />
               <Text>{item.text}</Text>
             </TouchableOpacity>
